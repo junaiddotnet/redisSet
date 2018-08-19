@@ -2,13 +2,23 @@ const redis = require('redis');
 const express = require('express');
 const viewegine  = require('ejs');
 const bodyparser  = require('body-parser')
+const path  = require('path');
+const { check, validationResult } = require('express-validator/check');
 
 
 const app = express();
 var dataValue=null;
 app.use(bodyparser.urlencoded({extended:false}));
 app.use(bodyparser.json());
+app.set('views',path.join(__dirname,'views'));
 app.set('view engine','ejs');
+// set the global variable
+
+app.use(function(req,res,next){
+    app.locals.message=null;
+    app.locals.status=null;
+    next();
+});
 // set radis client
 const redisClient  = redis.createClient();
 
@@ -29,10 +39,23 @@ app.get('/undeal',function(req,res){
     }
     res.redirect('/');
 });
-app.post('/addDeals',function(req,res){
+app.post('/addDeals',[check('dname').isEmail()],function(req,res){
     const dealName = req.body.dname;
     const userName  = req.body.uname;
     const text  = req.body.udesc;
+    
+   // Check the validation
+   
+    
+    const error  = validationResult(req);
+    
+    console.log('validtion ..'+error);
+
+    if (!error.isEmpty())
+    {
+        res.status(422).json({errors:error.array()});
+    }
+    
    // addDealWithUser(dealName,userName);
    //SendDealCheck(dealName,userName);
    // get the user list from chosen deal name
@@ -64,6 +87,7 @@ app.post('/addDeals',function(req,res){
 function MarkDealSet(dealId,clientId)
 {
     redisClient.sadd("deal:"+dealId,clientId);
+
 }
 function addDealWithUser (deal,name)
 {
