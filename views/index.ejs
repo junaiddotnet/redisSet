@@ -38,5 +38,20 @@
                         </form>
                     </div>
             </div>
+
+            <div class="panel panel-primary">
+                <div class="panel-heading h2">Above Selected Deal Already have Thse Users </div>
+                <div class="panel-body">
+                    <% if (!(typeof dataValue=='undefined')){ %>
+                        <% dataValue.forEach(function(entry){ %>
+                            <ul class="list-group">
+                                <li class="list-group-item h3">
+                                    <%=entry%>
+                                </li>
+                            </ul>
+                        <% }); %>
+                    <% } %>
+                </div>
+            </div>
     </body>
 </html>

@@ -5,6 +5,7 @@ const bodyparser  = require('body-parser')
 
 
 const app = express();
+var dataValue=null;
 app.use(bodyparser.urlencoded({extended:false}));
 app.use(bodyparser.json());
 app.set('view engine','ejs');
@@ -23,18 +24,26 @@ app.post('/addDeals',function(req,res){
     const text  = req.body.udesc;
    // addDealWithUser(dealName,userName);
    //SendDealCheck(dealName,userName);
+   // get the user list from chosen deal name
+   redisClient.sdiff('deals:'+dealName,function(err,reply){
+       if (reply!=null)
+       {
+            dataValue=reply;
+       }
+   });
    dealCheck(dealName,userName,function(err,response){
+    console.log(dataValue);
     if (response)
     {
         
-        res.render('index',{message:'This user name '+ userName + ' is already exist in this Deal ...'+dealName,status:'1'});
+        res.render('index',{message:'This user name '+ userName + ' is already exist in this Deal ...'+dealName,status:'1',dataValue:dataValue});
         
     }
     else
     {
         addDealWithUser(dealName,userName);
         console.log("We r going to send the deal ..");
-        res.render('index',{message:'This user name '+ userName + ' is Added to this Deal ...'+dealName,status:'0'});
+        res.render('index',{message:'This user name '+ userName + ' is Added to this Deal ...'+dealName,status:'0',dataValue:dataValue});
 
     }  
 
