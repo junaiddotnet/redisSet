@@ -42,11 +42,20 @@
             <div class="panel panel-primary">
                 <div class="panel-heading h2">Above Selected Deal Already have Thse Users </div>
                 <div class="panel-body">
-                    <% if (!(typeof dataValue=='undefined')){ %>
+                    <% if (!(typeof dataValue=='undefined' )){ %>
                         <% dataValue.forEach(function(entry){ %>
                             <ul class="list-group">
                                 <li class="list-group-item h3">
-                                    <%=entry%>
+                                    <span class="float-left">
+                                            <%=entry%>
+                                    </span>
+                                   
+                                    <% if (!(typeof dealName=='undefined')) { %>
+                                        
+                                        <span class="float-right">
+                                            <a href="/undeal?uid=<%=entry%>&did=<%=dealName%>" class="btn btn-danger" >Clic To UnDeal</a>
+                                        </span>
+                                    <% } %>
                                 </li>
                             </ul>
                         <% }); %>

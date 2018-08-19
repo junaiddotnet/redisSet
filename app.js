@@ -17,7 +17,18 @@ app.get('/',function(req,res){
 });
 app.get('/addDeals',function(req,res){
     res.render('index');
-})
+});
+app.get('/undeal',function(req,res){
+    const uid  = req.query.uid;
+    const did=req.query.did;
+    if (did!='undefined')
+    {
+        redisClient.srem('deals:'+did,uid,function(err,reply){
+            console.log('deleted .');
+        });
+    }
+    res.redirect('/');
+});
 app.post('/addDeals',function(req,res){
     const dealName = req.body.dname;
     const userName  = req.body.uname;
@@ -36,14 +47,14 @@ app.post('/addDeals',function(req,res){
     if (response)
     {
         
-        res.render('index',{message:'This user name '+ userName + ' is already exist in this Deal ...'+dealName,status:'1',dataValue:dataValue});
+        res.render('index',{message:'This user name '+ userName + ' is already exist in this Deal ...'+dealName,status:'1',dealName:dealName,dataValue:dataValue});
         
     }
     else
     {
         addDealWithUser(dealName,userName);
         console.log("We r going to send the deal ..");
-        res.render('index',{message:'This user name '+ userName + ' is Added to this Deal ...'+dealName,status:'0',dataValue:dataValue});
+        res.render('index',{message:'This user name '+ userName + ' is Added to this Deal ...'+dealName,status:'0',dealName:dealName,dataValue:dataValue});
 
     }  
 
