@@ -1,0 +1,27 @@
+<html>
+    <head>
+        <title>
+            Deals List
+        </title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    </head>
+    <body class="container">
+        <div class="panel panel-primary">
+            <div class="panel-heading h2">
+                List of Deals Keys
+            </div>
+            <div class="panel-body">
+                <ul class="list-group">
+                    <% deals.forEach(function(data){  %>
+                    <li class="list-group-item h3"> <%=data%> 
+                    <a class="btn btn-primary" href="/index?id=<%=data%>" >Click for Details..</a>
+                    </li>
+                    <% });%>
+                </ul>
+                <%=deals%>
+            </div>
+        </div>
+        
+    </body>
+</html>

@@ -17,14 +17,38 @@ app.set('view engine','ejs');
 app.use(function(req,res,next){
     app.locals.message=null;
     app.locals.status=null;
+    app.locals.deals = null;
+    app.locals.dealName=null;
     next();
 });
 // set radis client
 const redisClient  = redis.createClient();
 
-app.get('/',function(req,res){
-    res.render('index');
+app.get('/index',function(req,res){
+
+    const deal = req.query.id;
+    console.log(deal);
+    if (deal)
+    {
+        redisClient.sdiff(deal,function(err,reply){
+            console.log(reply);
+        res.render('index',{dealName:deal,dataValue:reply});
+           
+        });
+    }
+   
+   // res.render('Index');
+    
 });
+
+app.get('/',function(req,res){
+    // get the toal deals in the readis 
+
+    redisClient.keys('deals:*',function(err,reply){
+        res.render('main',{deals:reply});
+    });
+});
+
 app.get('/addDeals',function(req,res){
     res.render('index');
 });
@@ -39,7 +63,7 @@ app.get('/undeal',function(req,res){
     }
     res.redirect('/');
 });
-app.post('/addDeals',[check('dname').isEmail()],function(req,res){
+app.post('/addDeals',[check('dname').isString()],function(req,res){
     const dealName = req.body.dname;
     const userName  = req.body.uname;
     const text  = req.body.udesc;
