@@ -16,10 +16,12 @@
                     <% deals.forEach(function(data){  %>
                     <li class="list-group-item h3"> <%=data%> 
                     <a class="btn btn-primary" href="/index?id=<%=data%>" >Click for Details..</a>
+                    <a  class="btn btn-success" href="/AddComments?id=<%=data%>">Click To Comments</a>
                     </li>
                     <% });%>
                 </ul>
                 <%=deals%>
+                <a  href="/addDeals" class="btn btn-success" > Click to Add Deal</a> 
             </div>
         </div>
         

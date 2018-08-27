@@ -19,6 +19,8 @@ app.use(function(req,res,next){
     app.locals.status=null;
     app.locals.deals = null;
     app.locals.dealName=null;
+    app.commentsList  = null;
+    app.deal=null;
     next();
 });
 // set radis client
@@ -108,6 +110,52 @@ app.post('/addDeals',[check('dname').isString()],function(req,res){
    });
    // res.redirect('/');
 });
+//// Start of Helper Functions
+
+// End node for Commenst 
+app.get('/AddComments',function(req,res){
+    let dealId = req.query.id;
+    let key = dealId+':comments';
+    let message  = null;
+    console.log(dealId);
+    console.log('Comments add page');
+    redisClient.sdiff(key,function(err,result){
+        if (err)
+        {
+            console.log('no comments there yet');
+            message = 'no comments ...';
+            res.render('comments',{message:message,deal:dealId, commentsList:result});
+
+        }
+        else
+        {
+            console.log(result);
+            res.render('comments',{message:message,deal:dealId,commentsList:result});
+
+        }
+    });
+
+
+});
+app.post('/addComments',function(req,res){
+    let desc = req.body.desc;
+    let dealId=req.body.dealname;
+    let key  = dealId+':comments';
+    console.log(req.body.dealname);
+    console.log('post comments '+dealId);
+    
+    redisClient.sadd(key,desc,function(err,reply){
+        console.log(key);
+        if (!err)
+        {
+            console.log('added successfully');
+        }
+    });
+
+    res.redirect('/AddComments?id='+dealId);
+
+});
+// End of Commnets Node 
 function MarkDealSet(dealId,clientId)
 {
     redisClient.sadd("deal:"+dealId,clientId);

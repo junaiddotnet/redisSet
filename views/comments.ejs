@@ -1,0 +1,44 @@
+<html>
+    <head>
+        <title>
+            Comments
+        </title>
+                <!-- Latest compiled and minified CSS -->
+                <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    </head>
+    <body class="container">
+        <div class="panel panel-success">
+            <div class="panel-heading h2">
+                Comments <%=deal%>
+            </div>
+            <div class="panel-body">
+                <form method="POST" action="addComments" >
+                    <div class="form-group">
+                        <label>Deal Name:</label>
+                        <input type="text" name="dealname" class="form-control" value="<%=deal%>" >
+                        <label>Leave Comments:</label>
+                        <textarea name="desc" rows="5" class="form-control"></textarea>
+
+                        <input type="submit" class="btn btn-primary btn-lg" value="Leave Comment">
+                    </div>
+                </form>
+            </div>
+            <% if (!(typeof commentsList=='undefined')) { %>
+                <% commentsList.forEach(function(entry){ %>
+                        <div div class="card text-white bg-primary mb-3">
+                            
+                            <div class="card-body">
+                                <div class="card-text h3">
+                                 <%=entry%>
+                                </div>
+                            </div>
+                        </div>
+                <% }); %>
+            <%}%>
+           
+
+        </div>
+        
+    </body>
+</html>
