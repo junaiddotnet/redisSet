@@ -15,13 +15,13 @@
                 <ul class="list-group">
                     <% deals.forEach(function(data){  %>
                     <li class="list-group-item h3"> <%=data%> 
-                    <a class="btn btn-primary" href="/index?id=<%=data%>" >Click for Details..</a>
-                    <a  class="btn btn-success" href="/AddComments?id=<%=data%>">Click To Comments</a>
+                    <a class="btn btn-primary pull-right btn-lg" href="/index?id=<%=data%>" >Click for Details..</a>
+                    <a  class="btn btn-success pull-right btn-lg" href="/AddComments?id=<%=data%>">Click To Comments</a>
                     </li>
                     <% });%>
                 </ul>
-                <%=deals%>
-                <a  href="/addDeals" class="btn btn-success" > Click to Add Deal</a> 
+               
+                <a  href="/addDeals" class="btn btn-success btn-lg" > Click to Add Deal</a> 
             </div>
         </div>
         

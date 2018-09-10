@@ -44,6 +44,54 @@ app.get('/index',function(req,res){
 });
 
 app.get('/',function(req,res){
+    const sql = require('mssql/msnodesqlv8');
+
+    // connect with sql server .......
+    var config = {
+        connectionString: 'Driver=SQL Server;Server=DESKTOP-TS8N4AP\\SQLEXPRESS;Database=Blog;Trusted_Connection=true;'
+      };
+    var connection  = new sql.connect(config,function(err){
+        if (!err)
+        {
+            // connection is established 
+            // create request object 
+            var request  = new sql.Request();
+            // perform the quey now 
+            request.query('select PostId,PostName from posts',function(err,data){
+                    if (err)
+                    {
+                        console.log('Error in Query ..');
+                    }
+                    else
+                    {
+                        let v=null;
+                        var key  = null;
+                      data.recordset.forEach(element => {
+                         console.log(element);
+                          for (var p in element)
+                          {   key  = "PostKey:"+element["PostId"];
+                            console.log(key);
+                              redisClient.hmset(key,p,element[p],function(err,reply){
+                                    console.log("hmset Error"+err);
+                              });
+                              console.log(p);
+                              console.log(element[p]);
+                          }
+                      });
+                    }
+            });
+
+        }
+        else
+        {
+            console.log('sql server bad connectuin ');
+        }
+    });
+    connection.on("error", function(err) { 
+        console.log('Error');
+        console.error(err.stack); 
+        console.log(err);
+    });
     // get the toal deals in the readis 
 
     redisClient.keys('deals:*',function(err,reply){
@@ -134,7 +182,6 @@ app.get('/AddComments',function(req,res){
 
         }
     });
-
 
 });
 app.post('/addComments',function(req,res){
