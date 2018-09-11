@@ -196,9 +196,13 @@ app.post('/addComments',function(req,res){
         if (!err)
         {
             console.log('added successfully');
+<<<<<<< HEAD
             console.log('Success');
             console.log('checking git');
             console.log('git login check');
+=======
+            
+>>>>>>> lgin
         }
     });
 
