@@ -43,7 +43,21 @@ app.get('/index',function(req,res){
    // res.render('Index');
     
 });
+app.post('/changePost',function(req,res){
+    const id  = req.body.postId;
+    
+    dataResults.forEach(element => {
+        if (element['postId']==id)
+        {
+            console.log('found');
+            element['postName']='Change of name ..';
 
+        }
+    });
+    res.render('viewRecord',{dataResults:dataResults});
+    console.log(dataResults);
+   
+});
 app.get('/Posts',function(req,res){
     const sql = require('mssql/msnodesqlv8');
     
@@ -58,7 +72,7 @@ app.get('/Posts',function(req,res){
             // create request object 
             var request  = new sql.Request();
             // perform the quey now 
-            request.query('select PostId,PostName from posts',function(err,data){
+            request.query('select * from posts where postId in (1002,1003)',function(err,data){
                     if (err)
                     {
                         console.log('Error in Query ..');
@@ -68,7 +82,8 @@ app.get('/Posts',function(req,res){
                         let v=null;
                         var key  = null;
                         dataResults =data.recordset;
-                        console.log(dataResults);
+                        //console.log(dataResults);
+                        
                         res.render('viewRecord',{dataResults:dataResults});
                        // console.log(data.recordset);
                         data.recordset.forEach(element => {
@@ -96,7 +111,7 @@ app.get('/Posts',function(req,res){
         {
             console.log('sql server bad connectuin ');
         }
-        console.log(dataResults);
+        //console.log(dataResults);
         //res.render(dataResult);
     });
     connection.on("error", function(err) { 

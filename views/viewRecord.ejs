@@ -1,0 +1,39 @@
+<html>
+    <head>
+        <title>
+            Traverse Json Array
+        </title>
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <style>
+            textarea{
+                font-family:Arial, Helvetica, sans-serif;
+                font-size: large
+            }
+        </style>
+    </head>
+    <body class="container">
+        <% dataResults.forEach(function(data) { %> 
+        <form method="POST" action="changePost">
+
+            <div class="panel panel-primary form-group">
+                <div class="panel-heading h2">
+                    Post
+                </div>
+                <div class="panel-body">
+                    <label>Post Id:</label>
+                    <input type="text" id="postId" name="postId" class="form-control" value="<%=data['postId']%>">
+                    <label>Post Name :</label>
+                    <input  type="text" class="form-control" value="<%=data['postName']%>" >
+                    <label>Post Desc :</label>
+                    <textarea class="form-control"><%=data['postText']%></textarea>
+                </div>
+                <div class="panel-footer">
+                    <input type="submit" class="btn btn-danger" value="Save">
+                </div>
+            </div>
+        </form>
+
+        <% }); %>
+    </body>
+</html>
