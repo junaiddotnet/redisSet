@@ -43,9 +43,9 @@ app.get('/index',function(req,res){
     
 });
 
-app.get('/',function(req,res){
+app.get('/Posts',function(req,res){
     const sql = require('mssql/msnodesqlv8');
-
+    var dataResult = null;
     // connect with sql server .......
     var config = {
         connectionString: 'Driver=SQL Server;Server=DESKTOP-TS8N4AP\\SQLEXPRESS;Database=Blog;Trusted_Connection=true;'
@@ -66,10 +66,12 @@ app.get('/',function(req,res){
                     {
                         let v=null;
                         var key  = null;
-                      data.recordset.forEach(element => {
+                        dataResult =data;
+                        data.recordset.forEach(element => {
                          console.log(element);
                           for (var p in element)
-                          {   key  = "PostKey:"+element["PostId"];
+                          {   
+                            key  = "PostKey:"+element["PostId"];
                             console.log(key);
                               redisClient.hmset(key,p,element[p],function(err,reply){
                                     console.log("hmset Error"+err);
@@ -86,6 +88,7 @@ app.get('/',function(req,res){
         {
             console.log('sql server bad connectuin ');
         }
+        res.render(dataResult);
     });
     connection.on("error", function(err) { 
         console.log('Error');
@@ -93,6 +96,9 @@ app.get('/',function(req,res){
         console.log(err);
     });
     // get the toal deals in the readis 
+});
+app.get('/',function(req,res){
+  
 
     redisClient.keys('deals:*',function(err,reply){
         res.render('main',{deals:reply});
@@ -196,13 +202,7 @@ app.post('/addComments',function(req,res){
         if (!err)
         {
             console.log('added successfully');
-<<<<<<< HEAD
-            console.log('Success');
-            console.log('checking git');
-            console.log('git login check');
-=======
             
->>>>>>> lgin
         }
     });
 
