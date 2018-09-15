@@ -20,6 +20,7 @@ app.use(function(req,res,next){
     app.locals.deals = null;
     app.locals.dealName=null;
     app.commentsList  = null;
+    app.locals.dataResults = null;
     app.deal=null;
     next();
 });
@@ -45,7 +46,7 @@ app.get('/index',function(req,res){
 
 app.get('/Posts',function(req,res){
     const sql = require('mssql/msnodesqlv8');
-    var dataResult = null;
+    
     // connect with sql server .......
     var config = {
         connectionString: 'Driver=SQL Server;Server=DESKTOP-TS8N4AP\\SQLEXPRESS;Database=Blog;Trusted_Connection=true;'
@@ -66,18 +67,25 @@ app.get('/Posts',function(req,res){
                     {
                         let v=null;
                         var key  = null;
-                        dataResult =data;
+                        dataResults =data.recordset;
+                        console.log(dataResults);
+                        res.render('viewRecord',{dataResults:dataResults});
+                       // console.log(data.recordset);
                         data.recordset.forEach(element => {
-                         console.log(element);
+                        // console.log(element);
                           for (var p in element)
                           {   
                             key  = "PostKey:"+element["PostId"];
-                            console.log(key);
+                           // console.log(key);
                               redisClient.hmset(key,p,element[p],function(err,reply){
+                                  if (err)
+                                  {
                                     console.log("hmset Error"+err);
+                                  }
+                                    
                               });
-                              console.log(p);
-                              console.log(element[p]);
+                              //console.log(p);
+                             // console.log(element[p]);
                           }
                       });
                     }
@@ -88,7 +96,8 @@ app.get('/Posts',function(req,res){
         {
             console.log('sql server bad connectuin ');
         }
-        res.render(dataResult);
+        console.log(dataResults);
+        //res.render(dataResult);
     });
     connection.on("error", function(err) { 
         console.log('Error');
