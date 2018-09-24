@@ -4,6 +4,7 @@ const viewegine  = require('ejs');
 const bodyparser  = require('body-parser')
 const path  = require('path');
 const { check, validationResult } = require('express-validator/check');
+const sql = require('mssql/msnodesqlv8');
 
 
 const app = express();
@@ -59,7 +60,6 @@ app.post('/changePost',function(req,res){
    
 });
 app.get('/Posts',function(req,res){
-    const sql = require('mssql/msnodesqlv8');
     
     // connect with sql server .......
     var config = {
@@ -103,6 +103,7 @@ app.get('/Posts',function(req,res){
                              // console.log(element[p]);
                           }
                       });
+                      sql.close();
                     }
             });
 
