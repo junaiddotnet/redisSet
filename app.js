@@ -72,7 +72,7 @@ app.get('/Posts',function(req,res){
             // create request object 
             var request  = new sql.Request();
             // perform the quey now 
-            request.query('select * from posts where postId in (1002,1003)',function(err,data){
+            request.query('select * from posts',function(err,data){
                     if (err)
                     {
                         console.log('Error in Query ..');
